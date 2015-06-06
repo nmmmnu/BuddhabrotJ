@@ -19,42 +19,43 @@ package nu.nmmm.fractal.buddhabrot.color;
  *
  */
 
-class ColorTrigonometric extends IColorLinear{
-	final private static double	TAU			= 2 * Math.PI;
-	final private static int	CYCLE_SIZE	= RGB.MAX_COLOR;
+public class ColorTrigonometric extends IColorLinear{
+	final private static double	TAU					= 2 * Math.PI;
+	final private static double TRIGONOMETRIC_MAX	= 2;
 
 	@Override
-	public IColor getClone() {
-		return new ColorTrigonometric();
+	public boolean isRGBOut(){
+		return true;
 	}
 
 	@Override
-	public void convertColor(RGB rgb, int max){
-		int color = getColor();
+	public int convertColor(int channel, int color){
+		if (color == getMaxHitcount())
+			return 0;
 
-		if (color == max){
-			rgb.setColorZero();
-			return;
-		}
-
-		double ratio = color / (double) max;
+		double ratio = color / (double) getMaxHitcount();
 
 		double alpha = ratio * TAU;
 
-		double r = ratio * 2;
-		double x = Math.cos(alpha) + 1;
-		double y = Math.sin(alpha) + 1;
+		switch(channel){
+		case 0:
+			double r = ratio * 2;
+			return _bound(r);
 
-		int red   = _bound(r, max);
-		int green = _bound(x, max);
-		int blue  = _bound(y, max);
+		case 1:
+			double x = Math.cos(alpha) + 1;
+			return _bound(x);
 
-		rgb.setColor(red, green, blue, CYCLE_SIZE);
+		case 2:
+			double y = Math.sin(alpha) + 1;
+			return _bound(y);
+		}
+
+		// this will never happen
+		return 0;
 	}
 
-	private int _bound(double color, int maxcolor){
-		final double max = 2;
-
-		return (int) (color / max * CYCLE_SIZE);
+	private int _bound(double color){
+		return (int) (color / TRIGONOMETRIC_MAX * getMaxHitcount());
 	}
 }

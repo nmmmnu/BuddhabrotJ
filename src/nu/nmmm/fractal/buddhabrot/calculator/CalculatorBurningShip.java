@@ -2,15 +2,13 @@ package nu.nmmm.fractal.buddhabrot.calculator;
 
 import java.util.List;
 
-import nu.nmmm.fractal.buddhabrot.FPoint;
-
 public class CalculatorBurningShip implements ICalculator {
 	private final static float M_ESCAPE2 = 2 * 2;
 
 	@Override
-	public int Z(double x, double y, int iterations, List<FPoint> points) {
-		if (points != null)
-			points.clear();
+	public int Z(double x, double y, int iterations, List<Coordinate> coordinates) {
+		if (coordinates != null)
+			coordinates.clear();
 
 		double zr = 0;
 		double zi = 0;
@@ -24,16 +22,16 @@ public class CalculatorBurningShip implements ICalculator {
 				return i;
 
 			// save current points for later use...
-			if (points != null){
-				FPoint p = new FPoint(zr, zi);
-				points.add(p);
+			if (coordinates != null){
+				Coordinate p = new Coordinate(zr, zi);
+				coordinates.add(p);
 			}
 
-			if (zr > 0)
+			if (zr < 0)
 				zr = - zr;
 
-//			if (zi < 0)
-//				zi = - zi;
+			if (zi < 0)
+				zi = - zi;
 
 			// calculate next Z
 

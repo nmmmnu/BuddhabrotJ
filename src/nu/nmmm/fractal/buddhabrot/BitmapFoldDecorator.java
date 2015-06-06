@@ -1,22 +1,22 @@
 package nu.nmmm.fractal.buddhabrot;
 
-import nu.nmmm.fractal.buddhabrot.color.IColor;
+import nu.nmmm.fractal.buddhabrot.color.RGB;
 
 
-public class ArrayFoldedDecorator implements IArray{
+public class BitmapFoldDecorator implements IBitmap{
 	private int _width;
 	private int _height;
 
-	private IArray _array;
+	private IBitmap _array;
 
-	public ArrayFoldedDecorator(int width, int height, IArray array) {
+	public BitmapFoldDecorator(int width, int height, IBitmap array) {
 		_width	= width;
 		_height	= height;
 
 		_array	= array;
 	}
 
-	public ArrayFoldedDecorator(int size, IArray array) {
+	public BitmapFoldDecorator(int size, IBitmap array) {
 		this(size, size, array);
 	}
 
@@ -36,13 +36,8 @@ public class ArrayFoldedDecorator implements IArray{
 	}
 
 	@Override
-	public int getMaxHitcount() {
-		return _array.getMaxHitcount();
-	}
-
-	@Override
-	public IColor getPixel(int x, int y){
-		return _array.getPixel(_foldX(x), _foldY(y));
+	public RGB getPixel(int x, int y, RGB rgb){
+		return _array.getPixel(_foldX(x), _foldY(y), rgb);
 	}
 
 	@Override

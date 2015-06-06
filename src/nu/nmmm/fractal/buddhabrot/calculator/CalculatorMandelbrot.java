@@ -2,8 +2,6 @@ package nu.nmmm.fractal.buddhabrot.calculator;
 
 import java.util.List;
 
-import nu.nmmm.fractal.buddhabrot.FPoint;
-
 public class CalculatorMandelbrot implements ICalculator{
 	private final static float M_ESCAPE2 = 2 * 2;
 
@@ -18,13 +16,13 @@ public class CalculatorMandelbrot implements ICalculator{
 	}
 
 	@Override
-	public int Z(double x, double y, int iterations, List<FPoint> points) {
+	public int Z(double x, double y, int iterations, List<Coordinate> coordinates) {
 		if (_optimizeCardioid)
 			if (_optimizedCheckZ(x, y))
 				return iterations;
 
-		if (points != null)
-			points.clear();
+		if (coordinates != null)
+			coordinates.clear();
 
 		double zr = 0;
 		double zi = 0;
@@ -38,9 +36,9 @@ public class CalculatorMandelbrot implements ICalculator{
 				return i;
 
 			// save current points for later use...
-			if (points != null){
-				FPoint p = new FPoint(zr, zi);
-				points.add(p);
+			if (coordinates != null){
+				Coordinate p = new Coordinate(zr, zi);
+				coordinates.add(p);
 			}
 
 			// calculate next Z

@@ -3,8 +3,8 @@ package nu.nmmm.fractal.buddhabrot;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.nmmm.fractal.buddhabrot.calculator.Coordinate;
 import nu.nmmm.fractal.buddhabrot.calculator.ICalculator;
-import nu.nmmm.fractal.buddhabrot.color.IColor;
 import nu.nmmm.fractal.buddhabrot.color.RGB;
 
 public class BuddhaBrot {
@@ -15,7 +15,7 @@ public class BuddhaBrot {
 	private static String PROGRESS_BAR_MASK		= "Progressing: %8.4f of %8.4f %n";
 
 	private ICalculator _calc;
-	private IArray _arr;
+	private IBitmap _arr;
 
 	private int	_iterations;
 	private double _step;
@@ -25,9 +25,9 @@ public class BuddhaBrot {
 	private double _resBack;
 	private boolean _folded;
 
-	private List<FPoint> _points;
+	private List<Coordinate> _coordinates;
 
-	BuddhaBrot(ICalculator calc, IArray arr, int iterations, double step, boolean folded){
+	BuddhaBrot(ICalculator calc, IBitmap arr, int iterations, double step, boolean folded){
 		this._calc = calc;
 		this._arr = arr;
 
@@ -39,10 +39,10 @@ public class BuddhaBrot {
 		this._res		= M_WIDTH / arr.getWidth();
 		this._resBack	= arr.getWidth() / M_WIDTH;
 
-		this._points = new ArrayList<FPoint>();
+		this._coordinates = new ArrayList<Coordinate>();
 	}
 
-	BuddhaBrot(ICalculator calc, IArray arr, int iterations, double step){
+	BuddhaBrot(ICalculator calc, IBitmap arr, int iterations, double step){
 		this(calc, arr, iterations, step, false);
 	}
 
@@ -73,11 +73,7 @@ public class BuddhaBrot {
 
 		for(int x = 0; x < size; ++x){
 			for(int y = 0; y < size; ++y){
-				IColor color = _arr.getPixel(x, y);
-				if (color == null)
-					rgb.setColorZero();
-				else
-					color.convertColor(rgb, _arr.getMaxHitcount() );
+				_arr.getPixel(x, y, rgb);
 
 				System.out.format("%d %d %d ", rgb.getR(), rgb.getG(), rgb.getB());
 			}
@@ -87,7 +83,7 @@ public class BuddhaBrot {
 	}
 
 	boolean _calculateEscape(double xf, double yf){
-		int it = _calc.Z(xf, yf, _iterations, _points);
+		int it = _calc.Z(xf, yf, _iterations, _coordinates);
 
 		// if it escapes equal to iterations,
 		// then point is bounded
@@ -100,7 +96,7 @@ public class BuddhaBrot {
 			return true;
 
 		int iterations = 0;
-		for(final FPoint p : _points){
+		for(final Coordinate p : _coordinates){
 			++iterations;
 
 			if (iterations == 1)

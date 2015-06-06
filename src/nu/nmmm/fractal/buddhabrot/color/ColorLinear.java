@@ -1,6 +1,6 @@
 package nu.nmmm.fractal.buddhabrot.color;
 
-class ColorLinear extends IColorLinear{
+public class ColorLinear extends IColorLinear{
 	public final static int NORMAL		= 0;
 	public final static int NEGATIVE	= 1;
 
@@ -15,22 +15,20 @@ class ColorLinear extends IColorLinear{
 	}
 
 	@Override
-	public IColor getClone() {
-		return new ColorLinear(_type);
+	public boolean isRGBOut(){
+		return false;
 	}
 
 	@Override
-	public void convertColor(RGB rgb, int max){
-		int color = getColor();
-
+	public int convertColor(int channel_ignored, int color){
 		switch(_type){
 		case NEGATIVE:
-			color = max - color;
+			color = getMaxHitcount() - color;
 			break;
 
 		case NORMAL:
 		}
 
-		rgb.setColor(color, max);
+		return color;
 	}
 }

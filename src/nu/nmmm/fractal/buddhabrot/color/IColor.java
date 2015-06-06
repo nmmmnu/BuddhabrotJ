@@ -2,11 +2,13 @@ package nu.nmmm.fractal.buddhabrot.color;
 
 
 public interface IColor{
-	IColor getClone();
+	boolean isRGBOut();
+	int getInputChannelsCount();
 
 	void clear();
+	int getMaxHitcount();
 
-	int hit(int value);
+	int hitColor(int channel, int color, int count);
+	int convertColor(int channel, int color);
 
-	void convertColor(RGB rgb, int max);
 }
