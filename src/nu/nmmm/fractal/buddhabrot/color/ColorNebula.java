@@ -1,16 +1,28 @@
 package nu.nmmm.fractal.buddhabrot.color;
 
 public class ColorNebula implements IColor{
+	final private static int CHANNEL_R = 0;
+	final private static int CHANNEL_G = 1;
+	final private static int CHANNEL_B = 2;
+
 	private int _hitcount = 0;
 
 	private int _startR;
 	private int _startG;
 	private int _startB;
 
-	public ColorNebula(int startR, int startG, int startB){
+	private int _endR;
+	private int _endG;
+	private int _endB;
+
+	public ColorNebula(int startR, int endR, int startG, int endG, int startB, int endB, int _ignore_me){
 		this._startR = startR;
 		this._startG = startG;
 		this._startB = startB;
+
+		this._endR = endR;
+		this._endG = endG;
+		this._endB = endB;
 	}
 
 	@Override
@@ -37,28 +49,37 @@ public class ColorNebula implements IColor{
 	public int hitColor(int channel, int color, int count) {
 		int mychannel = _calcNumberChannel(count);
 
-		if (channel == mychannel)
+		// this may return -1,
+		// but it will not be equal to the mychannel.
+
+		if (channel == mychannel){
 			++color;
 
-		if (color > _hitcount)
-			_hitcount = color;
+			if (color > _hitcount)
+				_hitcount = color;
+		}
 
 		return color;
 	}
 
 	private int _calcNumberChannel(int a){
-		int result = 0;
+		if (_calcNumberChannelIn(a, _startR, _endR))
+			return CHANNEL_R;
 
-		if (a >= _startR)
-			++result;
+		if (_calcNumberChannelIn(a, _startG, _endG))
+			return CHANNEL_G;
 
-		if (a >= _startG)
-			++result;
+		if (_calcNumberChannelIn(a, _startB, _endB))
+			return CHANNEL_B;
 
-		if (a >= _startB)
-			++result;
+		return -1;
+	}
 
-		return result > 0 ? result - 1 : 3 - 1;
+	private boolean _calcNumberChannelIn(int a, int start, int end){
+		if (start < end)
+			return a >= start && a < end;
+
+		return a >= start || a < end;
 	}
 
 	@Override

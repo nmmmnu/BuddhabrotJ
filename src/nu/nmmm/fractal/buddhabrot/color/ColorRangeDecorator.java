@@ -1,12 +1,12 @@
 package nu.nmmm.fractal.buddhabrot.color;
 
-public class ColorFilterDecorator implements IColor{
+public class ColorRangeDecorator implements IColor{
 	private IColor _color;
 
 	private double _min;
 	private double _max;
 
-	public ColorFilterDecorator(IColor color, double min, double max){
+	public ColorRangeDecorator(IColor color, double min, double max){
 		this._color = color;
 
 		this._min = _check(min);
