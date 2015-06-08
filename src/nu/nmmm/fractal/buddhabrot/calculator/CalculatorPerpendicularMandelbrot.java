@@ -2,12 +2,12 @@ package nu.nmmm.fractal.buddhabrot.calculator;
 
 import java.util.List;
 
-public class CalculatorBurningShip implements ICalculator {
+public class CalculatorPerpendicularMandelbrot implements ICalculator {
 	private final static float M_ESCAPE2 = 2 * 2;
 
 	@Override
 	public boolean hasSymmetryY() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -32,10 +32,7 @@ public class CalculatorBurningShip implements ICalculator {
 				coordinates.add(p);
 			}
 
-			if (zr < 0)
-				zr = - zr;
-
-			if (zi < 0)
+			if (zi > 0)
 				zi = - zi;
 
 			// calculate next Z
@@ -48,5 +45,4 @@ public class CalculatorBurningShip implements ICalculator {
 
 		return i;
 	}
-
 }

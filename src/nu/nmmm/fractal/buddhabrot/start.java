@@ -1,6 +1,6 @@
 package nu.nmmm.fractal.buddhabrot;
 
-import nu.nmmm.fractal.buddhabrot.calculator.CalculatorBurningShip;
+import nu.nmmm.fractal.buddhabrot.calculator.CalculatorPerpendicularBurningShip;
 import nu.nmmm.fractal.buddhabrot.calculator.ICalculator;
 import nu.nmmm.fractal.buddhabrot.color.ColorLinear;
 import nu.nmmm.fractal.buddhabrot.color.ColorNebula;
@@ -16,8 +16,7 @@ public class start {
 	public static final int		ITERATIONS			= 5000;
 	public static final double	POINT_STEP			= (double) 2 / SCREEN_SIZE / 5;
 
-	public static final boolean	M_OPTIMIZE_CARDIOID	= !true;
-	public static final boolean	FOLDED_ARRAY		= !true;
+	public static final boolean	M_OPTIMIZE_CARDIOID	= true;
 
 //	public static int		COLOR_TYPE			= FColor.LINEAR;
 //	public static int		COLOR_TYPE			= FColor.LINEAR_NEGATIVE;
@@ -32,67 +31,19 @@ public class start {
 
 	}
 
-	private static IColor FColorNebula(int i){
-		int a1 = 0;
-		int a2 = (int) (ITERATIONS * 0.1);
-		int a3 = (int) (ITERATIONS * 0.7);
-
-		int a4 = a1;
-
-		/*
-		red - blue
-		IColor nebula = new ColorNebula(
-					a1, a2,
-					a3, a4,
-					a2, a3,
-					0 );
-
-		red - green
-		IColor nebula = new ColorNebula(
-					a1, a2,
-					a2, a3,
-					a3, a4,
-					0 );
-
-		blue - red
-		IColor nebula = new ColorNebula(
-					a2, a3,
-					a3, a4,
-					a1, a2,
-					0 );
-
-		blue - green
-		IColor nebula = new ColorNebula(
-					a3, a4,
-					a2, a3,
-					a1, a2,
-					0 );
-		*/
-
-		IColor nebula = new ColorNebula(
-				a2, a3,
-				a3, a4,
-				a1, a2,
-				0 );
-
-		//nebula = new ColorNegativeDecorator(nebula);
-
-		return nebula;
-	}
-
 	private static IColor FColor(int type){
 		switch(type){
 		default:
 		case LINEAR:			return new ColorLinear();
 		case TRIGONOMETRIC:		return new ColorTrigonometric();
-		case NEBULA:			return FColorNebula(ITERATIONS);
+		case NEBULA:			return ColorNebula.getInstance(ColorNebula.SCHEME_RG, ITERATIONS);
 		}
 	}
 
-	private static IBitmap __FArray(){
+	private static IBitmap __FArray(boolean hasSymetry){
 		IColor color  = FColor(COLOR_TYPE);
 
-		if (FOLDED_ARRAY){
+		if (hasSymetry){
 			IBitmap array = new Bitmap(SCREEN_SIZE, SCREEN_SIZE / 2 + 1, color);
 
 			return new BitmapFoldDecorator(SCREEN_SIZE, array);
@@ -103,10 +54,14 @@ public class start {
 
 	private static BuddhaBrot __FBuddhaBrot(){
 	//	ICalculator calc	= new CalculatorMandelbrot(M_OPTIMIZE_CARDIOID);
-		ICalculator calc	= new CalculatorBurningShip();
+	//	ICalculator calc	= new CalculatorBurningShip();
+		ICalculator calc	= new CalculatorPerpendicularBurningShip();
+	//	ICalculator calc	= new CalculatorPerpendicularMandelbrot();
 
-		IBitmap arr			= __FArray();
+		boolean hasSymmetryY = calc.hasSymmetryY();
 
-		return new BuddhaBrot(calc, arr, ITERATIONS, POINT_STEP, FOLDED_ARRAY);
+		IBitmap arr			= __FArray(hasSymmetryY);
+
+		return new BuddhaBrot(calc, arr, ITERATIONS, POINT_STEP, hasSymmetryY);
 	}
 }

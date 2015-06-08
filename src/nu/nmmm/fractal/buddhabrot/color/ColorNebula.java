@@ -1,6 +1,15 @@
 package nu.nmmm.fractal.buddhabrot.color;
 
 public class ColorNebula implements IColor{
+	final public static int SCHEME_RB = 0;
+	final public static int SCHEME_RG = 1;
+	final public static int SCHEME_BR = 2;
+	final public static int SCHEME_BG = 3;
+
+	final private static double SH_F_31 = 0.0;
+	final private static double SH_F_12 = 0.1;
+	final private static double SH_F_23 = 0.7;
+
 	final private static int CHANNEL_R = 0;
 	final private static int CHANNEL_G = 1;
 	final private static int CHANNEL_B = 2;
@@ -23,6 +32,23 @@ public class ColorNebula implements IColor{
 		this._endR = endR;
 		this._endG = endG;
 		this._endB = endB;
+	}
+
+	public static ColorNebula getInstance(int scheme, int iterations){
+		int a1 = (int) (iterations * SH_F_31);
+		int a2 = (int) (iterations * SH_F_12);
+		int a3 = (int) (iterations * SH_F_23);
+
+		int a4 = a1;
+
+		switch(scheme){
+		case SCHEME_RG: return new ColorNebula(a1, a2, a2, a3, a3, a4, 0 );
+		case SCHEME_RB:	return new ColorNebula(a1, a2, a3, a4, a2, a3, 0 );
+		case SCHEME_BG: return new ColorNebula(a3, a4, a2, a3, a1, a2, 0 );
+		case SCHEME_BR: return new ColorNebula(a2, a3, a3, a4, a1, a2, 0 );
+		}
+
+		return getInstance(SCHEME_RB, iterations);
 	}
 
 	@Override

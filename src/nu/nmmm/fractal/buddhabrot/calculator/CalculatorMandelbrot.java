@@ -16,6 +16,11 @@ public class CalculatorMandelbrot implements ICalculator{
 	}
 
 	@Override
+	public boolean hasSymmetryY() {
+		return true;
+	}
+
+	@Override
 	public int Z(double x, double y, int iterations, List<Coordinate> coordinates) {
 		if (_optimizeCardioid)
 			if (_optimizedCheckZ(x, y))
