@@ -32,8 +32,8 @@ public class CalculatorPerpendicularMandelbrot implements ICalculator {
 				coordinates.add(p);
 			}
 
-			if (zi > 0)
-				zi = - zi;
+			if (zr > 0)
+				zr = -zr;
 
 			// calculate next Z
 

@@ -51,9 +51,11 @@ public class Bitmap implements IBitmap{
 					_color.getMaxHitcount()
 			);
 		}else{
-			int val0 = _data[ _pos(x, y, 0) ];
-			int val1 = _data[ _pos(x, y, 1) ];
-			int val2 = _data[ _pos(x, y, 2) ];
+			boolean ch = _color.getInputChannelsCount() == 1;
+
+			int val0 = _data[ _pos(x, y, ch ? 0 : 0) ];
+			int val1 = _data[ _pos(x, y, ch ? 0 : 1) ];
+			int val2 = _data[ _pos(x, y, ch ? 0 : 2) ];
 
 			rgb.setColor(
 					_color.convertColor(0, val0),

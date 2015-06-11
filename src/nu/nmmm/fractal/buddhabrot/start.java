@@ -12,16 +12,15 @@ public class start {
 	private static final int	TRIGONOMETRIC		= 1;
 	private static final int	NEBULA				= 2;
 
-	public static final int		SCREEN_SIZE			= 1000;
+	public static final int		SCREEN_SIZE			= 4000;
 	public static final int		ITERATIONS			= 5000;
 	public static final double	POINT_STEP			= (double) 2 / SCREEN_SIZE / 5;
 
 	public static final boolean	M_OPTIMIZE_CARDIOID	= true;
 
-//	public static int		COLOR_TYPE			= FColor.LINEAR;
-//	public static int		COLOR_TYPE			= FColor.LINEAR_NEGATIVE;
-//	public static int		COLOR_TYPE			= FColor.TRIGONOMETRIC;
-	public static int		COLOR_TYPE			= NEBULA;
+//	public static int		COLOR_TYPE			= LINEAR;
+	public static int		COLOR_TYPE			= TRIGONOMETRIC;
+//	public static int		COLOR_TYPE			= NEBULA;
 
 	public static void main(String args[]){
 		BuddhaBrot bb = __FBuddhaBrot();
